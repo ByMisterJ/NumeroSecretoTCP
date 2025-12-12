@@ -6,7 +6,7 @@ import java.net.Socket;
 
 public class ServerTCP {
     public static void main(String[] args) {
-        final int PUERTO = 12345;
+        final int PUERTO = 12345; // Puerto donde escuchará el servidor TCP (Con AWS npi)
 
         try (ServerSocket serverSocket = new ServerSocket(PUERTO)) {
             System.out.println("Servidor esperando conexiones en el puerto " + PUERTO + "...");
