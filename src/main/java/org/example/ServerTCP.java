@@ -1,6 +1,9 @@
 package org.example;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -23,6 +26,38 @@ public class ServerTCP {
 
         } catch (IOException e) {
             System.err.println("Error al iniciar el servidor: " + e.getMessage());
+        }
+    }
+    /**
+     * Hilo que maneja la comunicación con un único cliente.
+     */
+    private static class ManejadorCliente extends Thread {
+        private Socket socket;
+
+        public ManejadorCliente(Socket socket) {
+            this.socket = socket;
+        }
+
+        @Override
+        public void run() {
+            try (
+                    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    PrintWriter out = new PrintWriter(socket.getOutputStream(), true)
+            ) {
+                String mensaje;
+                // Leemos continuamente hasta que el cliente cierre la conexión (null)
+
+
+            } catch (IOException e) {
+                System.err.println("Error en la comunicación con el cliente: " + e.getMessage());
+            } finally {
+                try {
+                    socket.close();
+                    System.out.println("Cliente desconectado.");
+                } catch (IOException e) {
+                    System.err.println("Error al cerrar el socket del cliente: " + e.getMessage());
+                }
+            }
         }
     }
 }
