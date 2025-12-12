@@ -1,5 +1,28 @@
 package org.example;
 
-public class ServerTCP {
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 
+public class ServerTCP {
+    public static void main(String[] args) {
+        final int PUERTO = 12345;
+
+        try (ServerSocket serverSocket = new ServerSocket(PUERTO)) {
+            System.out.println("Servidor esperando conexiones en el puerto " + PUERTO + "...");
+
+            // Bucle infinito para aceptar múltiples clientes
+            while (true) {
+                Socket socketCliente = serverSocket.accept();
+                System.out.println("Nuevo cliente conectado desde " + socketCliente.getInetAddress());
+
+                // Crear un hilo para manejar a este cliente
+                ManejadorCliente manejador = new ManejadorCliente(socketCliente);
+                manejador.start();
+            }
+
+        } catch (IOException e) {
+            System.err.println("Error al iniciar el servidor: " + e.getMessage());
+        }
+    }
 }
